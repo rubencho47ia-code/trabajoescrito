@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unidades 3 y 4 · Grado 5°</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+<style>
+:root{--bg:#eefaf3;--card:#fff;--ink:#2b2d42;--a:#0b7a75;--ok:#2a9d8f;--bad:#e63946;--y:#ffbe0b}
+@media (prefers-color-scheme:dark){:root{--bg:#1d2a2e;--card:#283538;--ink:#f1f3f9}}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Trebuchet MS","Comic Sans MS",sans-serif;background:var(--bg);color:var(--ink);font-size:18px;line-height:1.6}
+header{background:var(--a);color:#fff;padding:14px 16px;text-align:center}
+header h1{margin:0;font-size:1.5rem}
+header input[type=text]{margin-top:8px;width:min(420px,90%)}
+.rem{background:repeating-linear-gradient(45deg,#ffd60a,#ffd60a 18px,#ffc300 18px,#ffc300 36px);color:#1a1a1a;border:5px solid #d00000;border-radius:16px;padding:12px 16px;margin:12px 0;font-weight:800;font-size:1.05rem;text-align:center;animation:pls 1.6s infinite}
+.rem b{color:#d00000;font-size:1.15em}
+@keyframes pls{0%{box-shadow:0 0 0 0 #d0000099;transform:scale(1)}70%{box-shadow:0 0 0 14px #d0000000;transform:scale(1.012)}100%{box-shadow:0 0 0 0 #d0000000;transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.rem{animation:none}}
+.units{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;padding:6px 10px}
+.units button{flex:1 1 280px;max-width:420px;background:var(--card);color:var(--ink);border:3px solid var(--a);border-radius:16px;padding:10px 14px;font:inherit;font-weight:700;cursor:pointer}
+.units button.on{background:var(--a);color:#fff}
+nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:10px;position:sticky;top:0;background:var(--bg);z-index:5}
+nav button{background:var(--card);color:var(--ink);border:2px solid var(--a);border-radius:20px;padding:8px 16px;font:inherit;font-size:.9rem;cursor:pointer}
+nav button.on{background:var(--y);color:#222;border-color:var(--y)}
+main{max-width:860px;margin:auto;padding:10px 14px 60px}
+section{display:none}section.on{display:block}
+.card{background:var(--card);border-radius:14px;padding:12px 16px;margin:12px 0;box-shadow:0 2px 6px #0002}
+h2,h3{margin:.3em 0}
+input,select{font:inherit;padding:8px;border:2px solid #aab;border-radius:10px;width:100%;color:#222}
+button.b{background:var(--a);color:#fff;border:0;border-radius:12px;padding:8px 14px;font:inherit;cursor:pointer;margin:4px 4px 4px 0}
+button.g{background:var(--ok)}
+.opt{display:block;width:100%;text-align:left;margin:5px 0;padding:8px 12px;border:2px solid #aab;border-radius:10px;background:transparent;color:var(--ink);font:inherit;cursor:pointer}
+.opt.sel{border-color:var(--a);background:#0b7a7533}.opt.ok{border-color:var(--ok);background:#2a9d8f44}.opt.bad{border-color:var(--bad);background:#e6394644}
+.tag{font-size:.7rem;background:var(--y);color:#222;border-radius:8px;padding:1px 7px}
+.tip{background:#ffbe0b33;border-left:5px solid var(--y);padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.95rem}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 3px;line-height:1.15;font-size:.95em}
+.fr i{font-style:normal;padding:0 3px}.fr i:first-child{border-bottom:2px solid currentColor}
+.sv{margin:6px 0;overflow-x:auto}svg{max-width:100%;height:auto}
+.ti{width:min(260px,100%);margin-top:6px}
+.okI{border-color:var(--ok);background:#2a9d8f33}.badI{border-color:var(--bad);background:#e6394633}
+.big{font-size:3rem;text-align:center;margin:0}
+pre{background:#0b7a7522;padding:8px 12px;border-radius:8px;display:inline-block;font-size:1rem}
+table.t{border-collapse:collapse}table.t td,table.t th{border:2px solid #889;padding:4px 12px;text-align:center}
+.hb{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:8px}
+.hb select{width:auto;max-width:90%;padding:5px}
+.hb button{background:#fff;color:#222;border:0;border-radius:14px;padding:5px 10px;font:inherit;font-size:.8rem;cursor:pointer}
+@media print{nav,.units,header input,.hb,.no{display:none}}
+</style>
+</head>
+<body>
+<header><h1>🔢 Unidades 3 y 4 · Grado 5°</h1>
+<input type="text" id="nm" placeholder="✏️ Escribe tu nombre aquí" oninput="S.name=this.value;save()">
+<div class="hb"><select id="pf" onchange="pickProf(this.value)"></select>
+<button onclick="nuevo()">➕ Nuevo estudiante</button><button onclick="fileSave()">💾 Guardar en archivo</button><button onclick="$('fl').click()">📂 Cargar archivo</button>
+<input type="file" id="fl" accept=".json" hidden onchange="fileLoad(this)"></div>
+<div style="font-size:.8rem;margin-top:4px">Tu avance se guarda solo en este equipo. Para seguir en otro computador, usa 💾 y luego 📂.</div></header>
+<div style="max-width:860px;margin:auto;padding:0 14px"><div class="rem remh"></div></div>
+<div class="units" id="units"></div>
+<nav id="nav"></nav>
+<main>
+<section id="s0"><h2>📘 Teoría · <span class="un"></span></h2><div id="th"></div><button class="b" onclick="go(1)">🎮 Ir a los ejercicios ➡️</button></section>
+<section id="s1"><h2>🎮 Ejercicios (50) · <span class="un"></span></h2><div class="rem remh"></div><p>Toca la respuesta: verás al instante si acertaste.</p><div id="exl"></div></section>
+<section id="s2"><h2>🛠️ Taller (50 actividades) · <span class="un"></span></h2><div class="rem remh"></div><p>Escribe tu respuesta en cada casilla y al final pulsa «Revisar». Los decimales se escriben con coma (ej. <b>3,45</b>), las fracciones como <b>3/10</b> y las razones como <b>3:2</b>.</p><div id="tal"></div><button class="b g no" onclick="revisar()">✅ Revisar mi taller</button></section>
+<section id="s3"><h2>📝 Evaluación (50 preguntas) · <span class="un"></span></h2><div class="rem remh"></div><p>Escoge una sola respuesta en cada pregunta.</p><div id="evl"></div><button class="b g no" onclick="calif()">✅ Calificar evaluación</button><div id="rs"></div></section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+/* ✏️ DOCENTE: correo y URL del Apps Script para el envío automático del informe */
+const CORREO_PROFE="rubencho47ia@gmail.com";
+const URL_ENVIO="https://script.google.com/macros/s/AKfycby3x1V_C5Y4OMua2p9jRpUpct2u3YoSV4zShrrMl9f7nbXyDySjbYFcewcURXLtaUYr/exec";
+const REM_TXT="Recuerda que todos los procedimientos y resultados deben ser presentados como trabajo escrito en el cuaderno y sustentado de manera oral o escrita para ser tenido en cuenta como nota";
+const FM={f:"Escribe una fracción, ej. 3/10",n:"Escribe un número",d:"Escribe el número (decimales con coma, ej. 3,45)",s:"Escribe <, > o =",r:"Escribe la razón así: 3:2"};
+/* utilidades */
+const gcd=(a,b)=>b?gcd(b,a%b):a;
+function R(s){return()=>{s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const ri=(r,a,b)=>a+Math.floor(r()*(b-a+1)),pk=(r,a)=>a[Math.floor(r()*a.length)];
+const sh=(r,a)=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const E=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const H=s=>String(s).replace(/(\d+) (\d+)\/(\d+)/g,'$1<span class="fr"><i>$2</i><i>$3</i></span>').replace(/(\d+)\/(\d+)/g,'<span class="fr"><i>$1</i><i>$2</i></span>');
+const norm=s=>String(s==null?"":s).trim().replace(/\s+/g," ").replace(/\s*\/\s*/g,"/");
+const F=v=>Number(v.toFixed(6)).toString().replace(".",","),FZ=(v,k)=>v.toFixed(k).replace(".",","),M=n=>String(n).replace(/\B(?=(\d{3})+(?!\d))/g,".");
+const pw=k=>10**k,SYM=["<",">","="],cmpN=(a,b)=>Math.abs(a-b)<1e-9?"=":a<b?"<":">";
+const num=s=>{s=String(s).trim();if(/^\d{1,3}(\.\d{3})+(,\d+)?$/.test(s))s=s.replace(/\./g,"");return/^\d+([.,]\d+)?$/.test(s)?Number(s.replace(",",".")):NaN};
+function ok(x,v){const s=norm(v);if(!s)return false;const a=x.a;
+if(/^\d+:\d+$/.test(a))return s.replace(/\s*:\s*/g,":").replace("/",":")==a;
+const ea=num(a);if(!isNaN(ea)){const c=[num(s)];if(/^\d+([.,]\d+)?$/.test(s))c.push(Number(s.replace(",",".")));return c.some(y=>!isNaN(y)&&Math.abs(y-ea)<1e-9)}
+return s.toLowerCase()==a.toLowerCase()}
+const wr=(a,ws,r)=>{const s=new Set(ws.map(String).filter(x=>x!=a));let t=0;while(s.size<3&&t++<60){const m=[...a.matchAll(/\d+/g)];if(!m.length)break;const q=m[ri(r,0,m.length-1)],v=+q[0]+ri(r,1,3)*(r()<.5?-1:1);if(v<=0)continue;const x=a.slice(0,q.index)+v+a.slice(q.index+q[0].length);if(x!=a)s.add(x)}return[...s].slice(0,3)};
+const dd_=(r,k,lo,hi)=>{let n;do{n=ri(r,lo*pw(k),hi*pw(k))}while(n%10==0);return n/pw(k)};
+const sh3=r=>sh(r,[1,2,3,4,5,6,7,8,9]);
+/* palabras */
+const U1=["","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez","once","doce","trece","catorce","quince","dieciséis","diecisiete","dieciocho","diecinueve","veinte","veintiuno","veintidós","veintitrés","veinticuatro","veinticinco","veintiséis","veintisiete","veintiocho","veintinueve"],DE=["","","","treinta","cuarenta","cincuenta","sesenta","setenta","ochenta","noventa"],CE=["","ciento","doscientos","trescientos","cuatrocientos","quinientos","seiscientos","setecientos","ochocientos","novecientos"];
+const W=n=>n==100?"cien":n<30?U1[n]:n<100?DE[n/10|0]+(n%10?" y "+U1[n%10]:""):CE[n/100|0]+(n%100?" "+W(n%100):"");
+const WF=n=>W(n).replace(/uno$/,"una").replace(/ientos/g,"ientas");
+const UNIT=["","décimas","centésimas","milésimas"],UNIS=["","décima","centésima","milésima"];
+const fw=(f,k)=>f==1?"una "+UNIS[k]:WF(f)+" "+UNIT[k];
+const rd=(e,f,k)=>(e==1?"un entero ":W(e)+" enteros ")+fw(f,k);
+/* figuras */
+function NL(s,k,pts){const st=1/pw(k),t=(c)=>`fill="currentColor" font-size="13" text-anchor="middle"`;let h=`<svg viewBox="0 0 340 80" width="340"><line x1="20" y1="40" x2="320" y2="40" stroke="currentColor" stroke-width="2"/>`;
+for(let i=0;i<=10;i++){const x=20+i*30,e=i%10==0;h+=`<line x1="${x}" y1="${e?30:34}" x2="${x}" y2="${e?50:46}" stroke="currentColor" stroke-width="2"/>`}
+h+=`<text x="20" y="68" ${t()}>${F(s)}</text><text x="320" y="68" ${t()}>${F(s+10*st)}</text>`;
+pts.forEach(([p,l])=>{const x=20+p*30;h+=`<circle cx="${x}" cy="40" r="6" fill="#e63946"/><text x="${x}" y="22" fill="currentColor" font-size="15" font-weight="bold" text-anchor="middle">${l}</text>`});return h+"</svg>"}
+function GR(n){let s=`<svg viewBox="0 0 124 124" width="124" style="vertical-align:middle">`;for(let i=0;i<100;i++)s+=`<rect x="${2+(i%10)*12}" y="${2+Math.floor(i/10)*12}" width="12" height="12" fill="${i<n?"#0b7a75":"none"}" stroke="#889"/>`;return s+"</svg>"}
+/* ===== UNIDAD 3 ===== */
+const u0a=r=>{const ds=sh(r,[20,25,50,3,7,12,15]).slice(0,3);return{q:"¿Cuál de estas fracciones es una fracción decimal?",a:ri(r,1,9)+"/"+pk(r,[10,100,1000]),w:ds.map(d=>ri(r,1,d-1)+"/"+d)}};
+const u0b=r=>{const k=ri(r,1,3),n=ri(r,1,pw(k)-1);return{q:`Escribe como fracción decimal: ${fw(n,k)}.`,a:n+"/"+pw(k),w:[1,2,3].filter(j=>j!=k).map(j=>n+"/"+pw(j)).concat([(n+1)+"/"+pw(k)]),f:"f"}};
+const u0c=r=>{const d=pk(r,[10,100]),n=ri(r,1,d-1);return{q:`Completa la fracción equivalente: ${n}/${d} = ?/${d*10}`,a:""+n*10,w:[""+n,""+(n+10),""+n*100],f:"n"}};
+const u0d=r=>{const k=ri(r,1,3),n=ri(r,1,pw(k)-1);return{q:`¿Cuántos ceros tiene el denominador de la fracción decimal «${fw(n,k)}»?`,a:""+k,w:["1","2","3","4"],f:"n"}};
+const u0e=r=>({q:"Una fracción decimal es aquella cuyo denominador es:",a:"10, 100, 1000... (una potencia de 10)",o:["10, 100, 1000... (una potencia de 10)","Cualquier número par","Siempre 5","Menor que el numerador"]});
+const u1a=r=>{const s=sh3(r),e=s[0],d=s.slice(1,4),i=ri(r,0,2);return{q:`En el número ${e},${d.join("")}, ¿qué posición ocupa el dígito ${d[i]}?`,a:UNIT[i+1],o:["unidades","décimas","centésimas","milésimas"]}};
+const u1b=r=>{const s=sh3(r),e=s[0],d=s.slice(1,4),i=ri(r,0,2);return{q:`¿Qué dígito ocupa la posición de las ${UNIT[i+1]} en ${e},${d.join("")}?`,a:""+d[i],w:d.filter((x,j)=>j!=i).map(String).concat([""+e]),f:"n"}};
+const u1c=r=>{const k=ri(r,1,3),x=dd_(r,k,1,9),n=Math.round(x*pw(k));return{q:`¿Cuántas ${UNIT[k]} hay en ${F(x)}?`,a:""+n,w:[""+Math.round(n/10),""+n*10,""+Math.round(x)],f:"n"}};
+const u1d=r=>{const kx=ri(r,1,2),ky=ri(r,1,3),x=dd_(r,kx,0,9);let y=dd_(r,ky,0,9),k2=ky;if(r()<.2){y=x;k2=kx+1}return{q:`Compara con <, > o =:  ${FZ(x,kx)}  ?  ${FZ(y,k2)}`,a:cmpN(x,y),o:SYM,fx:1,f:"s"}};
+const ordQ=(r,V,fm)=>{const asc=V.slice().sort((a,b)=>a-b),jn=A=>A.map(fm).join(" < "),a=jn(asc),P=[[0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]].map(p=>jn(p.map(i=>V[i]))).filter(x=>x!=a);return{q:`Ordena de menor a mayor: ${V.map(fm).join(", ")}`,a,o:[a,...sh(r,P).slice(0,3)]}};
+const u1e=r=>{const s=new Set();while(s.size<3)s.add(dd_(r,ri(r,1,2),0,9));return ordQ(r,[...s],F)};
+const rdv=r=>{const k=ri(r,1,3);let f;do{f=ri(r,1,pw(k)-1)}while(f%10==0);const e=ri(r,1,20);return{e,k,f,v:e+f/pw(k)}};
+const u2a=r=>{const{e,k,f,v}=rdv(r),o=[1,2,3].filter(j=>j!=k);return{q:`¿Cómo se lee ${F(v)}?`,a:rd(e,f,k),w:[rd(e,f,o[0]),rd(e,f,o[1]),rd(e+1,f,k)]}};
+const u2b=r=>{const{e,k,f,v}=rdv(r);return{q:`Escribe con cifras: ${rd(e,f,k)}.`,a:F(v),w:[F(v*10),F(v/10),F(e+f/pw(k+1)),F(e+f/pw(k>1?k-1:2))],f:"d"}};
+const u2c=r=>{const k=ri(r,1,3);let f;do{f=ri(r,1,pw(k)-1)}while(f%10==0);const v=f/pw(k);return{q:`Escribe con cifras: ${fw(f,k)}.`,a:F(v),w:[F(v*10),F(v/10),F(f),F(v*100)],f:"d"}};
+const u2d=r=>{const e=ri(r,1,9),[a,b]=sh3(r),v=e+a/10+b/100;return{q:`¿Cuál es la descomposición de ${F(v)}?`,a:`${e} + ${F(a/10)} + ${F(b/100)}`,w:[`${e} + ${F(a/100)} + ${F(b/10)}`,`${e} + ${a} + ${b}`,`${e} + ${F(a/10)} + ${F(b/10)}`]}};
+const u2e=r=>{const e=ri(r,1,99),k=ri(r,1,2);let f;do{f=ri(r,pw(k-1),pw(k)-1)}while(f%10==0);return{q:`Un número decimal tiene parte entera ${e} y parte decimal ${f}. Escríbelo con cifras.`,a:e+","+f,w:[f+","+e,e+",0"+f,e+""+f],f:"d"}};
+const u3a=r=>{const k=ri(r,1,2),s=k==1?ri(r,0,5):ri(r,0,9)/10,p=ri(r,1,9),v=s+p/pw(k);return{q:"¿Qué número decimal representa el punto A en la semirrecta?",svg:NL(s,k,[[p,"A"]]),alt:`[Semirrecta de ${F(s)} a ${F(s+10/pw(k))}; el punto A está en la marca ${p}]`,a:F(v),w:[F(v+1/pw(k)),F(v-1/pw(k)),F(p/10),F(s+p)],f:"d"}};
+const u3b=r=>{const k=ri(r,1,2),s=k==1?ri(r,0,5):ri(r,0,9)/10,st=1/pw(k);return{q:`Entre ${F(s)} y ${F(s+10*st)} la semirrecta está dividida en 10 partes iguales. ¿Cuánto vale cada parte?`,a:F(st),w:[F(st*10),F(st/10),"1","0,5"],f:"d"}};
+const u3c=r=>{const k=ri(r,1,2),s=k==1?ri(r,0,5):ri(r,0,9)/10,ps=sh(r,[1,2,3,4,5,6,7,8,9]).slice(0,4).sort((a,b)=>a-b),L="ABCD",i=ri(r,0,3),v=s+ps[i]/pw(k);return{q:`Observa la semirrecta. ¿Cuál punto representa el número ${F(v)}?`,svg:NL(s,k,ps.map((p,j)=>[p,L[j]])),alt:`[Semirrecta de ${F(s)} a ${F(s+10/pw(k))} con los puntos A, B, C y D]`,a:L[i],o:["A","B","C","D"],fx:1}};
+const u3d=r=>{const k=ri(r,1,2),x=dd_(r,k,1,9),sg=r()<.5?1:-1;return{q:`En una semirrecta dividida en ${UNIT[k]}, ¿qué número está una marca a la ${sg>0?"derecha":"izquierda"} de ${F(x)}?`,a:F(x+sg/pw(k)),w:[F(x-sg/pw(k)),F(x+sg/pw(k+1)),F(x+sg),F(x+2*sg/pw(k))],f:"d"}};
+const u4a=r=>{const k=ri(r,1,3),n=ri(r,1,pw(k)-1),v=n/pw(k);return{q:`Escribe ${n}/${pw(k)} como número decimal.`,a:F(v),w:[F(v*10),F(v/10),F(n/pw(k+1)),F(n)],f:"d"}};
+const u4b=r=>{const k=ri(r,1,3);let n;do{n=ri(r,1,pw(k)-1)}while(n%10==0);return{q:`Escribe ${F(n/pw(k))} como fracción decimal (sin simplificar).`,a:n+"/"+pw(k),w:[n+"/"+pw(k+1),n+"/"+pw(k>1?k-1:2),(n*10)+"/"+pw(k),n+"/"+pw(k+2)],f:"f"}};
+const u4c=r=>{const d=pk(r,[2,4,5,20,25,50]),n=ri(r,1,d-1),v=n/d;return{q:`Escribe ${n}/${d} como número decimal.`,a:F(v),w:[F(v*10),F(v/10),F(n/10),F(d/n)],f:"d"}};
+const u4d=r=>{const k=ri(r,1,3),e=ri(r,1,9);let f;do{f=ri(r,1,pw(k)-1)}while(f%10==0);const n=e*pw(k)+f;return{q:`¿Cuál fracción decimal representa ${F(e+f/pw(k))}?`,a:n+"/"+pw(k),w:[n+"/"+pw(k+1),n+"/"+pw(k>1?k-1:2),(e*10+f)+"/"+pw(k)]}};
+const u4e=r=>{const k=ri(r,1,3),n=ri(r,1,pw(k)-1),v=n/pw(k);return{q:"¿Cuál de estas igualdades es correcta?",a:`${n}/${pw(k)} = ${F(v)}`,w:[`${n}/${pw(k)} = ${F(v*10)}`,`${n}/${pw(k)} = ${F(v/10)}`,`${n}/${pw(k)} = ${F(n)}`]}};
+const u5a=r=>{const x=dd_(r,ri(r,1,2),1,40),y=dd_(r,ri(r,1,2),1,40),v=x+y;return{q:`Calcula: ${F(x)} + ${F(y)}`,a:F(v),w:[F(v*10),F(v/10),F(v+.1),F(v-.1)],f:"d"}};
+const u5b=r=>{let x=dd_(r,ri(r,1,2),1,40),y=dd_(r,ri(r,1,2),1,40);if(x<y)[x,y]=[y,x];if(x==y)x+=1;const v=x-y;return{q:`Calcula: ${F(x)} - ${F(y)}`,a:F(v),w:[F(v*10),F(v/10),F(v+.1),F(x+y)],f:"d"}};
+const u5c=r=>{let x=dd_(r,ri(r,1,2),2,30),y=dd_(r,ri(r,1,2),1,20);const S2=[["Ana compró {x} kg de manzanas y {y} kg de peras. ¿Cuántos kilogramos de fruta compró en total?",1],["Un tanque tenía {x} litros de agua y se gastaron {y} litros. ¿Cuántos litros quedaron?",0],["Luis corrió {x} km en la mañana y {y} km en la tarde. ¿Cuántos kilómetros corrió en total?",1],["Una cinta mide {x} metros y se cortan {y} metros. ¿Cuánto mide la cinta que queda?",0]],[t,ad]=pk(r,S2),v=ad?x+y:x-y;return{q:t.replace("{x}",F(x)).replace("{y}",F(y)),a:F(v),w:[F(v*10),F(v/10),F(ad?x-y:x+y),F(v+.1)],f:"d"}};
+const u5d=r=>{const x=dd_(r,ri(r,1,2),1,30),y=dd_(r,ri(r,1,2),1,30),z=x+y;return{q:`Completa: ${F(x)} + ? = ${F(z)}`,a:F(y),w:[F(z+x),F(y*10),F(y/10),F(z)],f:"d"}};
+const u6a=r=>{const x=dd_(r,ri(r,1,2),1,20),n=ri(r,2,9),v=x*n;return{q:`Calcula: ${F(x)} × ${n}`,a:F(v),w:[F(v*10),F(v/10),F(x+n),F(v+.1)],f:"d"}};
+const u6b=r=>{const x=dd_(r,1,1,9),y=dd_(r,1,1,9),v=x*y;return{q:`Calcula: ${F(x)} × ${F(y)}`,a:F(v),w:[F(v*10),F(v/10),F(v*100),F(x+y)],f:"d"}};
+const u6c=r=>{const dv=pk(r,[2,3,4,5,6,8]),z=dd_(r,ri(r,1,2),1,9);return{q:`Calcula: ${F(z*dv)} ÷ ${dv}`,a:F(z),w:[F(z*10),F(z/10),F(z*dv),F(z+.1)],f:"d"}};
+const u6d=r=>{const x=dd_(r,ri(r,1,2),1,99),m=pk(r,[[10,"×"],[100,"×"],[1000,"×"],[10,"÷"],[100,"÷"]]),v=m[1]=="×"?x*m[0]:x/m[0];return{q:`Calcula: ${F(x)} ${m[1]} ${m[0]}`,a:F(v),w:[F(v*10),F(v/10),F(v*100),F(v/100)],f:"d"}};
+const u6e=r=>{const n=ri(r,2,9);if(r()<.5){const x=dd_(r,1,1,3);return{q:`Cada botella tiene ${F(x)} litros de jugo. ¿Cuántos litros hay en ${n} botellas?`,a:F(x*n),w:[F(x*n*10),F(x*n/10),F(x+n),F(x*n+.5)],f:"d"}}const z=dd_(r,ri(r,1,2),1,5);return{q:`Se reparten ${F(z*n)} litros de agua en ${n} recipientes iguales. ¿Cuántos litros hay en cada recipiente?`,a:F(z),w:[F(z*10),F(z/10),F(z*n),F(z+.5)],f:"d"}};
+/* ===== UNIDAD 4 ===== */
+const rp=r=>{let a,b;do{a=ri(r,2,15);b=ri(r,2,15)}while(a==b);return[a,b]};
+const v0a=r=>{const[a,b]=rp(r);return{q:`En un salón hay ${a} niñas y ${b} niños. ¿Cuál es la razón entre el número de niñas y el de niños?`,a:`${a}:${b}`,w:[`${b}:${a}`,`${a+b}:${b}`,`${a}:${a+b}`],f:"r"}};
+const cp=r=>{let a,b;do{a=ri(r,1,9);b=ri(r,2,9)}while(gcd(a,b)>1||a==b);return[a,b]};
+const v0b=r=>{const[a,b]=cp(r),k=ri(r,2,6);return{q:`Simplifica la razón ${a*k}:${b*k}`,a:`${a}:${b}`,w:[`${a*k}:${b}`,`${a}:${b*k}`,`${b}:${a}`],f:"r"}};
+const v0c=r=>{const[a,b]=rp(r);return{q:`Escribe la razón ${a}:${b} como una fracción.`,a:`${a}/${b}`,w:[`${b}/${a}`,`${a}/${a+b}`,`${a+b}/${b}`],f:"f"}};
+const v0d=r=>{const[a,b]=rp(r),t=[`Por cada ${a} unidades de la primera cantidad hay ${b} de la segunda`,`Por cada ${b} unidades de la primera cantidad hay ${a} de la segunda`,`Las dos cantidades suman ${a+b} unidades`,"Las dos cantidades son iguales"];return{q:`¿Qué significa la razón ${a}:${b}?`,a:t[0],o:t}};
+const v0e=r=>{const u=ri(r,2,9),h=ri(r,2,8),D=u*h,S2=[[`Un auto recorre ${D} km en ${h} horas. ¿Cuántos kilómetros recorre por hora?`],[`Un ciclista pedalea ${D} km en ${h} horas. ¿Cuántos kilómetros recorre en cada hora?`],[`Un equipo anotó ${D} goles en ${h} partidos. ¿Cuántos goles anotó por partido?`]];return{q:pk(r,S2)[0],a:""+u,w:[""+D,""+h,""+(u+1),""+(D+h)],f:"n"}};
+const v1a=r=>{const[a,b]=cp(r),k=ri(r,2,5),y=r()<.5;return{q:`¿Forman una proporción las razones ${a}:${b} y ${y?a*k:a*k+1}:${b*k}?`,a:y?"Sí":"No",o:["Sí","No"],fx:1}};
+const v1b=r=>{const[a,b]=rp(r),k=ri(r,2,6);return{q:`Halla el valor de x:  ${a}:${b} = ${a*k}:x`,a:""+b*k,w:[""+(b+k),""+(a*k),""+(b*k+a),""+(b*k-1)],f:"n"}};
+const v1c=r=>{const[a,b]=rp(r),k=ri(r,2,5);return{q:`En la proporción ${a}:${b} = ${a*k}:${b*k}, ¿cuánto vale el producto de los extremos (${a} × ${b*k})?`,a:""+a*b*k,w:[""+(a*k+b*k),""+(a*b),""+(a*k*b*k),""+(a*b*k+1)],f:"n"}};
+const v1d=r=>{const[a,b]=rp(r),k=ri(r,2,6);return{q:`Halla el valor de x:  ${a}:x = ${a*k}:${b*k}`,a:""+b,w:[""+(b*k),""+(a*k),""+(b+k),""+(b+1)],f:"n"}};
+const v1e=r=>{const[a,b]=cp(r),k=ri(r,2,5),c=a*k,d=b*k;return{q:`En la proporción ${a}:${b} = ${c}:${d}, ¿cuáles son los extremos?`,a:`${a} y ${d}`,o:[`${a} y ${d}`,`${b} y ${c}`,`${a} y ${b}`,`${c} y ${d}`]}};
+const DIR=[["compro más kilogramos de manzanas","el precio que pago aumenta"],["trabajo más horas","mi pago aumenta"],["se echa más gasolina al carro","el costo aumenta"],["compro más metros de tela","el costo total aumenta"],["un carro viaja más tiempo a velocidad constante","la distancia recorrida aumenta"]];
+const INV=[["más obreros trabajan en una obra","los días que se tardan disminuyen"],["un carro va más rápido","el tiempo del viaje disminuye"],["más grifos llenan un tanque","el tiempo para llenarlo disminuye"],["más niños se reparten una torta","la porción de cada uno disminuye"],["más personas se reparten un premio","lo que recibe cada una disminuye"]];
+const v2a=r=>{const d=r()<.5,s=pk(r,d?DIR:INV),t=["directamente proporcionales","inversamente proporcionales","no están relacionadas","son iguales"];return{q:`Si ${s[0]}, ${s[1]}. Estas magnitudes son:`,a:t[d?0:1],o:t}};
+const v2b=r=>{const p=pk(r,[300,400,500,600,800,1200]),n=ri(r,3,12);return{q:`Si 1 kg de arroz cuesta $${M(p)}, ¿cuánto cuestan ${n} kg?`,a:M(p*n),w:[M(p+n),M(p*n+p),M(p*(n-1)),M(Math.round(p/n))],f:"n"}};
+const v2c=r=>{const k=ri(r,2,9),m=ri(r,3,5),y=[1,2,3,4,5].map(i=>i==m?"?":k*i).join(", ");return{q:`Las magnitudes son directamente proporcionales. x: 1, 2, 3, 4, 5  →  y: ${y}. ¿Cuánto vale ?`,a:""+k*m,w:[""+(k*m+k),""+(k*m-k),""+(k+m),""+(k*m+1)],f:"n"}};
+const v2d=r=>{const K=pk(r,[24,36,48,60]),X=[1,2,3,4,6],m=ri(r,1,4),y=X.map((x,i)=>i==m?"?":K/x).join(", ");return{q:`Las magnitudes son inversamente proporcionales. x: 1, 2, 3, 4, 6  →  y: ${y}. ¿Cuánto vale ?`,a:""+K/X[m],w:[""+(K/X[m]+2),""+(K/X[m]-2),""+(K*X[m]),""+(K/X[m]+1)],f:"n"}};
+const v2e=r=>{const a=ri(r,2,9),k=ri(r,2,9);return{q:`Si x e y son directamente proporcionales y cuando x = ${a}, y = ${a*k}, ¿cuál es la constante de proporcionalidad (y ÷ x)?`,a:""+k,w:[""+(a*k),""+a,""+(a+k),""+(k+1)],f:"n"}};
+const v2f=r=>{const a=ri(r,2,9),b=ri(r,2,12);return{q:`Si x e y son inversamente proporcionales y cuando x = ${a}, y = ${b}, ¿cuál es el producto constante (x × y)?`,a:""+a*b,w:[""+(a+b),""+(b/a>1?Math.round(b/a):a),""+(a*b+a),""+(a*b-b)],f:"n"}};
+const dr=r=>{const n1=ri(r,2,9);let n2;do{n2=ri(r,3,15)}while(n2==n1);return[n1,n2]};
+const dw=(c1,n1,n2)=>[c1+n2-n1,c1*n2,Math.round(c1*n1/n2),c1+n2].map(M);
+const v3a=r=>{const[n1,n2]=dr(r),u=pk(r,[250,300,400,500,600,800,1200]),c1=u*n1;return{q:`${n1} cuadernos cuestan $${M(c1)}. ¿Cuánto cuestan ${n2} cuadernos?`,a:M(u*n2),w:dw(c1,n1,n2),f:"n"}};
+const v3b=r=>{const[n1,n2]=dr(r),u=pk(r,[40,45,50,60,70,80,90]),c1=u*n1;return{q:`Un carro recorre ${M(c1)} km en ${n1} horas. A la misma velocidad, ¿cuántos kilómetros recorre en ${n2} horas?`,a:M(u*n2),w:dw(c1,n1,n2),f:"n"}};
+const v3c=r=>{const[n1,n2]=dr(r),u=pk(r,[20,25,30,40,50,60]),c1=u*n1;return{q:`Para preparar ${n1} porciones de una receta se usan ${M(c1)} gramos de harina. ¿Cuántos gramos se necesitan para ${n2} porciones?`,a:M(u*n2),w:dw(c1,n1,n2),f:"n"}};
+const v3d=r=>{const[n1,n2]=dr(r),u=pk(r,[2,3,5,10,20]),c1=u*n1;return{q:`En un mapa, ${n1} cm representan ${M(c1)} km en la realidad. ¿Cuántos kilómetros representan ${n2} cm?`,a:M(u*n2),w:dw(c1,n1,n2),f:"n"}};
+const v3e=r=>{const n1=ri(r,2,9),u=pk(r,[250,300,400,500,600,800]),c1=u*n1;return{q:`Si ${n1} kg de arroz cuestan $${M(c1)}, ¿cuánto cuesta 1 kg?`,a:M(u),w:[M(c1),M(u*2),M(u+n1),M(Math.round(c1/(n1+1)))],f:"n"}};
+const inv=r=>{const K=pk(r,[24,36,48,60,72,90,120,144,180]),ds=[];for(let d=2;d<=30;d++)if(K%d==0)ds.push(d);const[x1,x2]=sh(r,ds).slice(0,2);return[x1,K/x1,x2,K/x2,K]};
+const iw=(y1,x1,x2)=>[Math.round(y1*x2/x1),y1+(x2-x1)>0?y1+(x2-x1):y1+1,y1*x2,y1+x2].map(String);
+const v4a=r=>{const[x1,y1,x2,y2]=inv(r);return{q:`${x1} obreros terminan una obra en ${y1} días. ¿En cuántos días terminarían la misma obra ${x2} obreros?`,a:""+y2,w:iw(y1,x1,x2),f:"n"}};
+const v4b=r=>{const[x1,y1,x2,y2]=inv(r);return{q:`Un ciclista que va a ${x1} km/h tarda ${y1} horas en recorrer un trayecto. Si va a ${x2} km/h, ¿cuántas horas tarda?`,a:""+y2,w:iw(y1,x1,x2),f:"n"}};
+const v4c=r=>{const[x1,y1,x2,y2]=inv(r);return{q:`${x1} grifos llenan un tanque en ${y1} minutos. ¿En cuántos minutos lo llenarían ${x2} grifos?`,a:""+y2,w:iw(y1,x1,x2),f:"n"}};
+const v4d=r=>{const[x1,y1,x2,y2,K]=inv(r);return{q:`${K} dulces se reparten en partes iguales entre ${x1} niños (${y1} para cada uno). Si fueran ${x2} niños, ¿cuántos dulces recibiría cada uno?`,a:""+y2,w:iw(y1,x1,x2),f:"n"}};
+const v4e=r=>{const i=pk(r,INV),d=sh(r,DIR).slice(0,3),f=s=>`Cuando ${s[0]}, ${s[1]}`;return{q:"¿Cuál situación se resuelve con una regla de tres inversa?",a:f(i),w:d.map(f)}};
+const v4f=r=>{const dd=r()<.5,s=pk(r,dd?DIR:INV);return{q:`Para resolver el problema «cuando ${s[0]}, ${s[1]}» se usa una regla de tres:`,a:dd?"directa":"inversa",o:["directa","inversa"],fx:1}};
+/* [plantilla, ¿sirve para el taller escrito?] */
+const UN={3:{name:"Unidad 3: Fracciones decimales y números decimales",
+TOP:["Fracciones decimales","Números decimales","Escritura y lectura de decimales","Decimales en la semirrecta numérica","Conversión entre decimales y fracciones decimales","Suma y resta de decimales","Multiplicación y división de decimales"],
+TIP:["Recuerda que una fracción decimal tiene denominador 10, 100 o 1000, y que el número de ceros te dice cuántos decimales tiene.","Repasa las posiciones: décimas, centésimas y milésimas, y compara primero la parte entera y luego cada posición decimal.","Practica leer la parte entera como «enteros» y la parte decimal con el nombre de la última cifra (décimas, centésimas o milésimas).","Observa en cuántas partes está dividida la semirrecta (de 0,1 en 0,1 o de 0,01 en 0,01) y cuenta las marcas desde el extremo izquierdo.","Para pasar de fracción decimal a decimal, usa tantas cifras decimales como ceros tenga el denominador; para ir al revés, quita la coma y pon la potencia de 10.","Alinea las comas, completa con ceros y opera como con números naturales, dejando la coma en la misma columna.","En la multiplicación cuenta las cifras decimales de los factores para ubicar la coma; al multiplicar o dividir por 10, 100 o 1000 la coma se corre a la derecha o a la izquierda."],
+T:[[[u0a,0],[u0b,1],[u0c,1],[u0d,1],[u0e,0]],[[u1a,0],[u1b,1],[u1c,1],[u1d,1],[u1e,0]],[[u2a,0],[u2b,1],[u2c,1],[u2d,0],[u2e,1]],[[u3a,1],[u3b,1],[u3c,0],[u3d,1]],[[u4a,1],[u4b,1],[u4c,1],[u4d,0],[u4e,0]],[[u5a,1],[u5b,1],[u5c,1],[u5d,1]],[[u6a,1],[u6b,1],[u6c,1],[u6d,1],[u6e,1]]]},
+4:{name:"Unidad 4: Razones y proporciones",
+TOP:["Razones","Proporciones","Magnitudes correlacionadas","Regla de tres simple","Regla de tres inversa"],
+TIP:["Una razón compara dos cantidades con una división (a:b). Simplifícala dividiendo ambos términos por el mismo número y cuida el orden de las cantidades.","Una proporción es la igualdad de dos razones. Usa el producto de extremos igual al producto de medios para hallar el valor que falta.","Si al aumentar una magnitud la otra aumenta en la misma proporción, son directas (y÷x constante); si la otra disminuye, son inversas (x×y constante).","En la regla de tres directa organiza los datos, multiplica en cruz y divide: si una cantidad aumenta, la otra también.","En la regla de tres inversa el producto se mantiene: multiplica los datos que están en la misma fila y divide entre el dato restante; si una aumenta, la otra disminuye."],
+T:[[[v0a,1],[v0b,1],[v0c,1],[v0d,0],[v0e,1]],[[v1a,0],[v1b,1],[v1c,1],[v1d,1],[v1e,0]],[[v2a,0],[v2b,1],[v2c,1],[v2d,1],[v2e,1],[v2f,1]],[[v3a,1],[v3b,1],[v3c,1],[v3d,1],[v3e,1]],[[v4a,1],[v4b,1],[v4c,1],[v4d,1],[v4e,0],[v4f,0]]]}};
+function item(u,tp,idx,seed,typed){const L=UN[u].T[tp].filter(x=>!typed||x[1]),r=R(seed);r();r();const o=L[idx%L.length][0](r),it={tp,q:o.q,svg:o.svg||"",alt:o.alt||"",a:o.a,f:o.f||""};
+if(!typed){it.op=o.o?(o.fx?o.o:sh(r,o.o)):sh(r,[o.a,...wr(o.a,o.w||[],r)]);it.c=it.op.indexOf(o.a)}return it}
+const LST={};
+for(const u of [3,4]){const n=UN[u].TOP.length,seen=new Set(),mk=(seed,typed,off)=>Array.from({length:50},(_,i)=>{let it,k=0;do{it=item(u,i%n,Math.floor(i/n)+off,seed+i*7919+k*104729,typed)}while(seen.has(it.q+it.svg+it.a)&&++k<40);seen.add(it.q+it.svg+it.a);return it});
+LST[u]={EX:mk(u*1000,0,0),TA:mk(u*1000+3000,1,1),EV:mk(u*1000+7000,0,2)}}
+/* estado y guardado */
+const dd=()=>({ex:{},ta:{},ev:{},evDone:0,taDone:0,enviado:0}),dflt=()=>({name:"",unit:3,d:{3:dd(),4:dd()}});
+let S=dflt();const D=()=>S.d[S.unit],LS=()=>LST[S.unit],UU=()=>UN[S.unit];
+const P="u34p:",lsGet=k=>{try{return localStorage.getItem(k)}catch(e){return null}},lsSet=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},lsDel=k=>{try{localStorage.removeItem(k)}catch(e){}};
+const mergeS=o=>{const s=dflt();if(o&&typeof o=="object"){s.name=String(o.name||"");s.unit=o.unit==4?4:3;for(const u of [3,4]){const x=o.d&&o.d[u];if(x&&typeof x=="object")s.d[u]=Object.assign(dd(),{ex:x.ex||{},ta:x.ta||{},ev:x.ev||{},evDone:x.evDone?1:0,taDone:x.taDone?1:0,enviado:x.enviado?1:0})}}return s};
+let cur=lsGet("u34last")||"";
+{const raw=lsGet(P+cur);if(raw){try{S=mergeS(JSON.parse(raw))}catch(e){}}}
+function save(){const k=S.name.trim()||"sin nombre";if(cur&&cur!==k)lsDel(P+cur);cur=k;lsSet(P+k,JSON.stringify(S));lsSet("u34last",k);profs()}
+function profs(){const n=[];try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k.startsWith(P))n.push(k.slice(P.length))}}catch(e){}
+const s=$("pf");s.innerHTML="";s.add(new Option("👤 Elegir estudiante…",""));n.sort().forEach(x=>s.add(new Option(x,x,0,x==cur)))}
+function refresh(){$("nm").value=S.name;document.querySelectorAll(".un").forEach(e=>e.textContent=UU().name);
+document.querySelectorAll("#units button").forEach(b=>b.classList.toggle("on",b.dataset.u==S.unit));
+$("th").innerHTML=UU().TH.map(t=>`<div class="card"><h3>${t[0]}</h3>${H(t[1]).replace(/§(\d+),(\d+),(\d+)§/g,(m,a,b,c)=>NL(+a/10**(+b),+b,[[+c,"A"]])).replace(/§G(\d+)§/g,(m,a)=>GR(+a))}</div>`).join("");
+quiz("ex");taller();quiz("ev");res();profs();go(0)}
+function setU(u){S.unit=u;save();refresh()}
+function pickProf(v){if(!v)return;if(S.name.trim())save();const r=lsGet(P+v);if(!r)return;try{S=mergeS(JSON.parse(r))}catch(e){return}cur=v;lsSet("u34last",v);refresh()}
+function nuevo(){if(S.name.trim())save();S=dflt();cur="";lsDel("u34last");refresh();$("nm").focus()}
+function fileSave(){if(!S.name.trim())return alert("Escribe tu nombre primero ✏️");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(S)],{type:"application/json"}));a.download="avance_unidades_3_4_"+S.name.trim().replace(/\s+/g,"_")+".json";document.body.appendChild(a);a.click();a.remove();alert("¡Archivo guardado! ✅ Búscalo en tu carpeta de Descargas. Para seguir, usa 📂 Cargar archivo.")}
+function fileLoad(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d||typeof d.d!="object"||d.d===null)throw 0;if(S.name.trim())save();S=mergeS(d);cur="";save();refresh();alert("¡Avance cargado! ✅")}catch(e){alert("Este archivo no es un avance válido")}};r.readAsText(f);inp.value=""}
+/* ejercicios y evaluación */
+function quiz(k){const L=LS()[k=="ex"?"EX":"EV"],A=D()[k],T=UU().TOP;let h="";
+if(k=="ex"){const n=Object.keys(A).length,c=L.filter((x,i)=>A[i]==x.c).length;h=`<div class="tip">Respondidas: ${n}/50 · Correctas: ${c}</div>`}
+$(k+"l").innerHTML=h+L.map((x,i)=>{const a=A[i],s=k=="ex"?a!=null:D().evDone;return `<div class="card"><span class="tag">${T[x.tp]}</span><br><b>${i+1}. ${H(E(x.q))}</b>${x.svg?`<div class="sv">${x.svg}</div>`:""}`+x.op.map((o,j)=>`<button class="opt ${s?(j==x.c?"ok":j==a?"bad":""):(j==a?"sel":"")}" onclick="pick('${k}',${i},${j})">${H(E(o))}</button>`).join("")+"</div>"}).join("")}
+function pick(k,i,j){const d=D();if(k=="ex"&&d.ex[i]!=null)return;if(k=="ev"&&d.evDone)return;d[k][i]=j;save();quiz(k)}
+/* taller */
+function taller(){const d=D(),T=UU().TOP,L=LS().TA,c=L.filter((x,i)=>ok(x,d.ta[i])).length;
+$("tal").innerHTML=(d.taDone?`<div class="tip">Acertaste ${c} de 50 en el taller.</div>`:"")+L.map((x,i)=>{const v=d.ta[i]||"",g=d.taDone&&ok(x,v);return `<div class="card"><span class="tag">${T[x.tp]}</span><br><b>${i+1}. ${H(E(x.q))}</b>${x.svg?`<div class="sv">${x.svg}</div>`:""}<input class="ti ${d.taDone?(g?"okI":"badI"):""}" value="${E(v)}" ${d.taDone?"disabled":""} placeholder="${FM[x.f]}" oninput="D().ta[${i}]=this.value;save()"> ${d.taDone?(g?"✅":`❌ <span class="tip">Respuesta correcta: ${H(E(x.a))}</span>`):""}</div>`}).join("")}
+function revisar(){const d=D();if(d.taDone)return;const n=Object.keys(d.ta).filter(k=>norm(d.ta[k])).length;if(n<50&&!confirm("Te faltan casillas por responder. ¿Revisar igual?"))return;d.taDone=1;save();taller();res();scrollTo(0,0)}
+/* nota */
+function calc(){const d=D(),L=LS(),T=UU().TOP,e=L.EX.map((x,i)=>d.ex[i]==x.c),t=L.TA.map((x,i)=>!!d.taDone&&ok(x,d.ta[i])),v=L.EV.map((x,i)=>d.ev[i]==x.c),s=a=>a.filter(Boolean).length;
+const fin=((s(e)*.2+s(t)*.3+s(v)*.5)/50*5).toFixed(1);
+const dif=T.map((n,z)=>{let f=0,tot=0;[[e,L.EX],[t,L.TA],[v,L.EV]].forEach(([A,LL],q)=>{if(q==1&&!d.taDone)return;LL.forEach((x,i)=>{if(x.tp==z){tot++;if(!A[i])f++}})});return{t:n,z,f,n:tot}}).filter(x=>x.n&&x.f/x.n>=.4);
+return{ce:s(e),ct:s(t),cv:s(v),fin,dif}}
+function calif(){const d=D();if(d.evDone)return;if(!S.name.trim())return alert("Escribe tu nombre arriba ✏️");
+if(Object.keys(d.ev).length<50&&!confirm("Te faltan preguntas por responder. ¿Calificar igual?"))return;
+d.evDone=1;save();quiz("ev");res();$("rs").scrollIntoView()}
+function res(){const el=$("rs"),d=D();if(!d.evDone){el.innerHTML="";return}
+const{ce,ct,cv,fin,dif}=calc();
+el.innerHTML=`<div class="card"><h2>🏆 Mi nota · ${UU().name}</h2><h3>${E(S.name)}</h3><p class="big">${fin>=4?"🌟":fin>=3?"😊":"💪"} ${fin} / 5.0</p>
+<p style="text-align:center">Ejercicios: ${ce}/50 (20%) · Taller: ${d.taDone?ct+"/50":"sin revisar"} (30%) · Evaluación: ${cv}/50 (50%)</p>
+<div class="rem">${"📓✍️ ¡MUY IMPORTANTE! "+REM_TXT.replace(/^Recuerda/,"<b>Recuerda</b>")}</div>
+${d.taDone?"":'<div class="tip">⚠️ No has revisado el taller; cuenta como 0. Ve a 🛠️ Taller y pulsa «Revisar».</div>'}
+<h3>🔎 Dificultades observadas</h3>`+(dif.length?dif.map(x=>`<div class="tip"><b>${x.t}</b> (${x.f} de ${x.n} actividades fallidas o sin responder)<br>💡 ${UU().TIP[x.z]}</div>`).join(""):'<div class="tip">🎉 ¡No se observan dificultades importantes! Sigue así.</div>')+
+(d.enviado?'<div class="tip">✅ Tu informe ya fue enviado al profesor.</div>':"")+
+`<button id="bsend" class="b no" style="background:#ff006e" onclick="enviar()">📧 Enviar informe al profesor</button><button class="b no" onclick="window.print()">🖨️ Imprimir</button></div>`}
+/* informe PDF y envío */
+function mkPdf(){const J=window.jspdf&&window.jspdf.jsPDF;if(!J)return null;
+const d=new J({unit:"mm",format:"letter"}),{ce,ct,cv,fin,dif}=calc(),W=d.internal.pageSize.getWidth()-30,dn=D();let y=20;
+const line=(t,sz,b)=>{sz=sz||11;d.setFontSize(sz);d.setFont("helvetica",b?"bold":"normal");d.splitTextToSize(String(t),W).forEach(l=>{if(y>268){d.addPage();y=20}d.text(l,15,y);y+=sz*0.4+1.3})};
+line("Informe: "+UU().name+" (grado 5°)",14,1);y+=2;
+line("Estudiante: "+S.name,12);line("Fecha: "+new Date().toLocaleDateString("es-CO"),12);
+line("Nota final: "+fin+" / 5.0",14,1);
+line("Ejercicios: "+ce+"/50 (20%)   ·   Taller: "+(dn.taDone?ct+"/50":"sin revisar")+" (30%)   ·   Evaluación: "+cv+"/50 (50%)",11);y+=2;
+line("IMPORTANTE: "+REM_TXT+".",11,1);y+=3;
+line("Dificultades observadas",13,1);
+if(dif.length)dif.forEach(x=>line("- "+x.t+" ("+x.f+" de "+x.n+" fallidas): "+UU().TIP[x.z]));else line("No se observan dificultades importantes.");
+y+=3;line("Detalle de la evaluación",13,1);
+LS().EV.forEach((x,i)=>{const a=dn.ev[i];line((i+1)+". "+x.q+(x.alt?" "+x.alt:""),10,1);
+line("   Respondió: "+(a==null?"(sin responder)":x.op[a])+"  ->  "+(a==x.c?"CORRECTA":"INCORRECTA. Respuesta correcta: "+x.op[x.c]),10)});
+return d}
+const mail=(a,b)=>{location.href="mailto:"+CORREO_PROFE+"?subject="+encodeURIComponent(a)+"&body="+encodeURIComponent(b)};
+const asu=()=>`Unidad ${S.unit} - ${S.name.trim()} - Nota ${calc().fin}`;
+async function enviar(){if(!D().evDone)return alert("Primero califica la evaluación");
+if(URL_ENVIO)return auto();
+return manual()}
+async function auto(){const b=$("bsend"),{cv,fin,dif}=calc(),nm=S.name.trim(),d=mkPdf();
+if(!d){alert("No se pudo crear el PDF (revisa tu conexión a internet).");return}
+const fn="informe_unidad"+S.unit+"_"+nm.replace(/\s+/g,"_")+".pdf";b.disabled=true;b.textContent="⏳ Enviando…";
+try{const b64=await new Promise((o,no)=>{const r=new FileReader();r.onload=()=>o(String(r.result).split(",")[1]);r.onerror=no;r.readAsDataURL(d.output("blob"))});
+await fetch(URL_ENVIO,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({asunto:asu(),nombre:nm,nota:fin,correctas:cv,dificultades:dif.length?dif.map(x=>x.t).join(", "):"ninguna importante",archivo:fn,pdf:b64})});
+D().enviado=1;save();res();alert("¡Informe enviado a tu profesor! ✅")}
+catch(e){b.disabled=false;b.textContent="📧 Enviar informe al profesor";alert("No se pudo enviar automáticamente (revisa tu internet). Se usará el envío manual por correo.");manual()}}
+async function manual(){const{cv,fin,dif}=calc(),nm=S.name.trim(),asunto=asu();
+const cuerpo=`Hola profe, envío mi informe de la ${UU().name}.\nEstudiante: ${nm}\nNota: ${fin} / 5.0 (evaluación: ${cv} de 50 correctas)\nDificultades: ${dif.length?dif.map(x=>x.t).join(", "):"ninguna importante"}\n\n(Adjunto mi informe en PDF)`;
+const d=mkPdf();
+if(!d){alert("No se pudo crear el PDF (revisa tu conexión a internet). Se abrirá la impresión: elige «Guardar como PDF» y luego adjúntalo al correo.");window.print();mail(asunto,cuerpo);return}
+const fn="informe_unidad"+S.unit+"_"+nm.replace(/\s+/g,"_")+".pdf",blob=d.output("blob"),f=new File([blob],fn,{type:"application/pdf"});
+if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],title:asunto,text:cuerpo+(CORREO_PROFE?"\n\nEnviar a: "+CORREO_PROFE:"")});return}catch(e){if(e.name=="AbortError")return}}
+const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=fn;document.body.appendChild(a);a.click();a.remove();
+alert("Se descargó tu informe en PDF 📄. Ahora se abrirá tu correo: ¡adjunta el PDF y envíalo!");
+mail(asunto,cuerpo)}
+/* teoría */
+UN[3].TH=[
+["1. Fracciones decimales",`Una <b>fracción decimal</b> es una fracción cuyo denominador es 10, 100, 1000... (una potencia de 10). Ejemplos: 3/10, 45/100, 125/1000.<br>• 7/10 se lee «siete décimas» · 45/100 «cuarenta y cinco centésimas» · 125/1000 «ciento veinticinco milésimas».<br>El número de ceros del denominador indica cuántas cifras decimales tendrá el decimal.<br><br>§G35§ &nbsp; 35/100: de 100 cuadritos, 35 están pintados.`],
+["2. Números decimales",`Un <b>número decimal</b> tiene una parte entera y una parte decimal separadas por una coma: 3,452.<table class="t"><tr><th>Unidades</th><th>,</th><th>Décimas</th><th>Centésimas</th><th>Milésimas</th></tr><tr><td>3</td><td>,</td><td>4</td><td>5</td><td>2</td></tr></table><div class="tip"><b>Comparar:</b> primero la parte entera; si son iguales, compara décimas, luego centésimas y luego milésimas. Agregar ceros a la derecha no cambia el valor: 0,5 = 0,50 = 0,500.</div>`],
+["3. Escritura y lectura de números decimales",`Se lee la parte entera con la palabra «enteros» y luego la parte decimal con el nombre de la <b>última cifra</b>:<br>• 3,45 → tres enteros, cuarenta y cinco centésimas.<br>• 0,7 → siete décimas.<br>• 2,075 → dos enteros, setenta y cinco milésimas.<div class="tip"><b>Descomposición:</b> 4,23 = 4 + 0,2 + 0,03</div>`],
+["4. Representación en la semirrecta numérica",`Para ubicar decimales se divide cada unidad en 10 partes iguales: cada marca vale <b>0,1</b> (una décima). Si se divide entre dos décimas consecutivas, cada marca vale 0,01 (una centésima).<br><br>§7,1,7§ &nbsp; El punto A está en la 7.ª marca después del 0: A = 0,7.`],
+["5. Conversión entre decimales y fracciones decimales",`• <b>Fracción decimal → decimal:</b> tantas cifras decimales como ceros tenga el denominador. 7/10 = 0,7 · 45/100 = 0,45 · 3/100 = 0,03.<br>• <b>Decimal → fracción decimal:</b> el numerador es el número sin la coma y el denominador es 1 seguido de tantos ceros como cifras decimales. 0,125 = 125/1000.<br>• Otras fracciones: se buscan equivalentes con denominador 10, 100 o 1000. 3/5 = 6/10 = 0,6 · 1/4 = 25/100 = 0,25.`],
+["6. Adición y sustracción de números decimales",`Se escriben los números en columna con las <b>comas alineadas</b>, se completan con ceros y se opera como con números naturales. La coma del resultado queda en la misma columna.<br><pre>  12,35\n+  4,80\n-------\n  17,15</pre><div class="tip">Los procedimientos se escriben en el cuaderno: así puedes sustentarlos.</div>`],
+["7. Multiplicación y división de números decimales",`• <b>Multiplicar:</b> se multiplican como si no tuvieran coma y en el producto se separan tantas cifras decimales como tengan los dos factores juntos. 2,5 × 0,4 → 25 × 4 = 100 → 2 decimales → 1,00 = 1.<br>• <b>×10, ×100, ×1000:</b> la coma se corre a la derecha 1, 2 o 3 lugares. 3,45 × 100 = 345.<br>• <b>÷10, ÷100, ÷1000:</b> la coma se corre a la izquierda. 45,6 ÷ 10 = 4,56.<br>• <b>Dividir decimal entre natural:</b> se divide normal y se pone la coma al bajar la primera cifra decimal. 7,5 ÷ 5 = 1,5.`]];
+UN[4].TH=[
+["1. Razones",`Una <b>razón</b> compara dos cantidades mediante una división y se escribe a:b (o a/b).<br>• En un salón hay 12 niñas y 8 niños. La razón de niñas a niños es 12:8, que simplificada es 3:2.<br>• El <b>orden importa</b>: 12:8 no es lo mismo que 8:12.<div class="tip"><b>Razón unitaria:</b> compara con 1 unidad. Si un auto recorre 120 km en 2 horas, la razón es 60 km por hora.</div>`],
+["2. Proporciones",`Una <b>proporción</b> es la igualdad de dos razones: a:b = c:d.<br>• Los <b>extremos</b> son a y d; los <b>medios</b> son b y c.<br>• <b>Propiedad fundamental:</b> el producto de los extremos es igual al producto de los medios (a × d = b × c).<br>Ejemplo: 2:3 = 8:12 → 2 × 12 = 24 y 3 × 8 = 24.<div class="tip">Para hallar un valor desconocido: 3:4 = 9:x → x = (4 × 9) ÷ 3 = 12.</div>`],
+["3. Magnitudes correlacionadas",`Una <b>magnitud</b> es algo que se puede medir (kilos, horas, dinero, personas...). Dos magnitudes están correlacionadas cuando una depende de la otra.<br>• <b>Directamente proporcionales:</b> si una aumenta, la otra aumenta en la misma proporción. El cociente y ÷ x es constante.<table class="t"><tr><th>Kilos</th><td>1</td><td>2</td><td>3</td></tr><tr><th>Precio ($)</th><td>500</td><td>1000</td><td>1500</td></tr></table><br>• <b>Inversamente proporcionales:</b> si una aumenta, la otra disminuye. El producto x × y es constante.<table class="t"><tr><th>Obreros</th><td>2</td><td>4</td><td>6</td></tr><tr><th>Días</th><td>12</td><td>6</td><td>4</td></tr></table>`],
+["4. Regla de tres simple (directa)",`Sirve para hallar un valor cuando las magnitudes son <b>directamente proporcionales</b>.<br><b>Pasos:</b> 1) Organiza los datos. 2) Verifica que si una aumenta, la otra también. 3) Multiplica en cruz y divide.<div class="tip">Si 3 cuadernos cuestan $2.400, ¿cuánto cuestan 7?<br>3 → 2.400 &nbsp;&nbsp; 7 → x<br>x = (7 × 2.400) ÷ 3 = 16.800 ÷ 3 = <b>$5.600</b></div>`],
+["5. Regla de tres inversa",`Sirve cuando las magnitudes son <b>inversamente proporcionales</b> (si una aumenta, la otra disminuye).<br><b>Pasos:</b> 1) Organiza los datos. 2) Verifica que una aumenta y la otra disminuye. 3) Multiplica los datos <b>de la misma fila</b> y divide entre el dato que queda.<div class="tip">4 obreros terminan una obra en 12 días. ¿Cuántos días tardarán 6 obreros?<br>4 → 12 &nbsp;&nbsp; 6 → x<br>x = (4 × 12) ÷ 6 = 48 ÷ 6 = <b>8 días</b></div><div class="tip"><b>¿Directa o inversa?</b> Pregúntate: si una cantidad aumenta, ¿la otra aumenta (directa) o disminuye (inversa)?</div>`]];
+/* navegación */
+document.querySelectorAll(".remh").forEach(e=>e.innerHTML="📓✍️ ¡MUY IMPORTANTE! "+REM_TXT.replace(/^Recuerda/,"<b>Recuerda</b>")+" ✍️📓");
+$("units").innerHTML=[3,4].map(u=>`<button data-u="${u}" onclick="setU(${u})">${u==3?"📗":"📘"} ${UN[u].name}</button>`).join("");
+const NAV=["📘 Teoría","🎮 Ejercicios","🛠️ Taller","📝 Evaluación"];
+$("nav").innerHTML=NAV.map((t,i)=>`<button onclick="go(${i})">${t}</button>`).join("");
+function go(n){document.querySelectorAll("section").forEach((s,i)=>s.classList.toggle("on",i==n));document.querySelectorAll("nav button").forEach((b,i)=>b.classList.toggle("on",i==n));scrollTo(0,0)}
+refresh();
+</script>
+</body>
+</html>
